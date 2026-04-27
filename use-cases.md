@@ -1,89 +1,91 @@
-# Python + ImageMagick：让你的图片批处理工作流优雅起来
+# Python + ImageMagick: Make Your Image Batch Processing Workflow Elegant
 
-做内容创作、运营推广或者技术开发的朋友，大概都遇到过这样的烦恼：
+If you work in content creation, marketing, or development, you've probably run into these frustrations:
 
-- 手里有几百张产品图，需要统一处理成不同尺寸适配各个平台
-- 每周要生成固定风格的社交媒体封面图，手动一张张裁剪太折磨人
-- 网站图库要转成 WebP 格式优化加载速度，重复劳动让人崩溃
-- 不同来源的图片尺寸各异，想批量统一规格却找不到趁手的工具
+- You have hundreds of product photos that need to be resized for different platforms
+- Every week you need to create social media cover images with consistent style, and manually cropping them one by one is exhausting
+- Your website's image library needs to be converted to WebP format for better loading speed, but the repetitive work is maddening
+- Images come from various sources with different sizes, and you can't find a good tool to batch standardize them
 
-如果你也有类似的困扰，今天介绍的这个开源工具或许正是你需要的。
+If any of this sounds familiar, the open source tool we're introducing today might be exactly what you need.
 
-## 认识一下这个工具
+## Meet This Tool
 
-这是一款**图片批量处理工具**，专门解决需要反复执行、规则统一的图片处理任务。
+This is a **batch image processing tool** designed specifically for repetitive, rule-based image processing tasks.
 
-它能做什么？
+What can it do?
 
-**格式转换**——把 PNG、JPG、BMP 等格式批量转为 WebP，或者反过来转换。
+**Format Conversion** — Batch convert images between formats like PNG, JPG, BMP, and WebP.
 
-**尺寸调整**——批量缩放图片到指定尺寸，比如统一改成 800x600，或者生成缩略图。
+**Resize** — Batch scale images to specified dimensions, like standardizing to 800x600 or generating thumbnails.
 
-**裁切成方图**——把图片居中裁切成 1:1 正方形，适合做头像、社交媒体封面。
+**Crop to Square** — Center-crop images to 1:1 squares, perfect for avatars and social media covers.
 
-**补边成方图**——在图片周围添加白边变成正方形，完整保留原始内容不裁切。
+**Pad to Square** — Add borders around images to make them square, preserving the original content without cropping.
 
-**查看图片信息**——快速了解一批图片的尺寸、格式、大小。
+**View Image Info** — Quickly check dimensions, format, and file size for a batch of images.
 
-## 真实使用场景
+## Real-World Use Cases
 
-### 运营人员的日常
+### A Marketer's Daily Routine
 
-假设你是公司运营，要为每周的微信公众号准备封面图。要求是 1:1 方图，居中裁切，JPG 格式。
+Say you're a company marketer preparing cover images for weekly WeChat public account posts. The requirement is 1:1 square images, center-cropped, JPG format.
 
-以前可能要逐张用修图软件处理。现在只需要选择「社媒方图」这个预设，整个文件夹的图片自动处理完成，输出目录与源文件分离，不会弄乱原始素材。
+Previously, you might have had to process each image one by one with photo editing software. Now you just select the "Social Square" preset, and the entire folder of images processes automatically. The output directory is separate from the source files, so your original assets stay organized.
 
-### 前端开发者的图片优化
+### A Frontend Developer's Image Optimization
 
-网站要上线，需要把图库里的图片全部转成 WebP 格式，并批量生成缩略图用于列表展示。
+A website is going live, and you need to convert all images in the library to WebP format, plus generate thumbnails for list displays.
 
-可以先预览会处理哪些文件、生成什么样的结果，确认无误后再实际执行。处理完成后还会生成一份清单，记录每张图的处理情况，方便后续检查。
+You can preview which files will be processed and what the results will look like before actually running the conversion. After processing, a manifest is generated recording the status of each image for later review.
 
-### 建立可复用的工作流
+### Building Reusable Workflows
 
-如果某个处理任务需要定期执行，比如每周生成一批产品缩略图，可以把处理规则保存为配置文件。下次执行时直接调用，不需要重新设置参数。
+If a processing task needs to run regularly, like generating product thumbnails every week, you can save the processing rules as a configuration file. Next time, just call the config directly without resetting parameters.
 
-把常用任务固化下来，一劳永逸。
+固化常用任务，一劳永逸。
 
-### 内容创作者的个人素材库
+Lock in your common tasks for good.
 
-你有大量照片需要统一风格：头像统一裁成小方图、产品图补白边变成正方形、壁纸统一调整成全高清分辨率。
+### Content Creator's Personal Asset Library
 
-内置了多种常用预设，覆盖头像、社媒方图、补边方图、缩略图、WebP 优化、壁纸等常见需求。选择对应的预设就能直接使用，不需要记任何复杂的参数。
+You have a large collection of photos that need consistent styling: avatars cropped to small squares, product images padded to squares, wallpapers standardized to Full HD resolution.
 
-## 为什么值得用
+Built-in presets cover common needs like avatars, social squares, padding squares, thumbnails, WebP optimization, and wallpapers. Just pick the right preset and you're good to go — no need to remember complex parameters.
 
-**零学习成本**——内置多种常用预设，日常任务直接选用，不需要记复杂的参数。
+## Why It's Worth Using
 
-**安全优先**——默认跳过已存在的文件，不会意外覆盖；支持先预览再执行，确认结果满意再实际处理。
+**Zero Learning Curve** — Multiple built-in presets handle common tasks, no need to memorize complex parameters.
 
-**可追溯可复用**——处理完成后生成清单记录；常用任务可保存为配置文件反复调用。
+**Safety First** — Skips existing files by default to prevent accidental overwrites; supports preview mode before actual execution.
 
-**稳定可靠**——基于成熟开源工具 ImageMagick 执行实际图像处理，性能和效果有保障。
+**Traceable and Reusable** — Generates a manifest after processing; common tasks can be saved as config files for repeated use.
 
-**跨平台**——支持 Windows、Linux、macOS，只要装好 ImageMagick 就能用。
+**Stable and Reliable** — Powered by the mature open source tool ImageMagick for processing, ensuring performance and quality.
 
-## 适合谁用
+**Cross-Platform** — Supports Windows, Linux, and macOS as long as ImageMagick is installed.
 
-**内容创作者**——统一素材库风格，批量处理产品图、封面图。
+## Who It's For
 
-**运营人员**——定期生成固定规格的社交媒体图片。
+**Content Creators** — Standardize asset library style, batch process product images and covers.
 
-**前端开发者**——批量优化网站图库，转 WebP、生成缩略图。
+**Marketing Teams** — Generate fixed-spec social media images on a regular schedule.
 
-**设计师**——建立标准化的图片输出流程，减少重复劳动。
+**Frontend Developers** — Batch optimize website image libraries, convert to WebP, generate thumbnails.
 
-## 不适合谁
+**Designers** — Establish standardized image output workflows to reduce repetitive work.
 
-- 需要精细修图、特效处理的场景（那是 Photoshop、Figma 的专长）
-- 偶尔处理一两张图片的情况（直接用修图软件更方便）
+## Who It's NOT For
 
-## 工作原理
+- Tasks requiring fine-grained editing or effects (that's what Photoshop, Figma are for)
+- Occasional one-off image processing (photo editing software is more convenient)
 
-工具采用 Python 作为"指挥官"，ImageMagick 作为"执行者"的架构。Python 负责管理处理流程和规则，ImageMagick 负责实际的图像处理操作。这样既保持了简洁（不需要安装额外依赖），又保证了效果（利用成熟稳定的图像处理引擎）。
+## How It Works
+
+The tool uses Python as the "commander" and ImageMagick as the "executor." Python manages the processing flow and rules, while ImageMagick handles the actual image operations. This keeps things simple (no extra dependencies needed) while ensuring quality (leveraging a mature, stable image processing engine).
 
 ---
 
-如果你经常需要批量处理图片、建立标准化的图片工作流，这个工具值得一试。
+If you frequently need to batch process images or build standardized image workflows, this tool is worth a try.
 
-**项目地址**：[MorningStar0709/image-manipulation-python-magick](https://github.com/MorningStar0709/image-manipulation-python-magick)
+**Project URL**: [MorningStar0709/image-manipulation-python-magick](https://github.com/MorningStar0709/image-manipulation-python-magick)
