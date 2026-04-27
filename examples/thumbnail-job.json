@@ -1,0 +1,14 @@
+{
+  "tool_version": "0.2.0",
+  "profile": "thumbnail",
+  "input": "path/to/images",
+  "output": "path/to/output",
+  "recursive": true,
+  "pattern": "*.png",
+  "manifest": "path/to/output/manifest.json",
+  "action": "resize",
+  "width": 427,
+  "height": 240,
+  "suffix": "_thumb",
+  "quality": 85
+}
