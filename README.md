@@ -17,6 +17,8 @@ This repository packages a reusable CLI and a Trae skill for common image workfl
 - Skill definition: `skills/image-manipulation-python-magick/SKILL.md`
 - Best for: repeatable, rule-based image workflows instead of manual GUI editing
 
+Want to know who this tool is for and what problems it solves? Check out the [use cases](./use-cases.md).
+
 ## Highlights
 
 - Python standard library only, with ImageMagick used as the processing backend

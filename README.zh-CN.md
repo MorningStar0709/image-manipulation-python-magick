@@ -17,6 +17,8 @@
 - skill 定义：`skills/image-manipulation-python-magick/SKILL.md`
 - 适用场景：规则化、可重复的图片处理任务，而不是手工 GUI 修图
 
+想了解这个工具适合谁用、能解决什么问题？查看 [使用场景](./use-cases.md)。
+
 ## 项目特点
 
 - 仅依赖 Python 标准库，图像处理由 ImageMagick 完成
