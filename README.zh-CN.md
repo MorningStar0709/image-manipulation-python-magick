@@ -215,6 +215,8 @@ CLI 提供以下子命令：
 - 安全策略：[SECURITY.md](./SECURITY.md)
 - 行为规范：[CODE_OF_CONDUCT.md](./CODE_OF_CONDUCT.md)
 - PR 模板：[pull_request_template.md](./.github/pull_request_template.md)
+- 变更记录：[CHANGELOG.md](./CHANGELOG.md)
+- 路线图：[ROADMAP.md](./ROADMAP.md)
 
 ## 许可证
 

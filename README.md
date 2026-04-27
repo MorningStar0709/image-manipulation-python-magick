@@ -215,6 +215,8 @@ Contributions are welcome. See [CONTRIBUTING.md](./CONTRIBUTING.md) for guidance
 - Security policy: [SECURITY.md](./SECURITY.md)
 - Code of conduct: [CODE_OF_CONDUCT.md](./CODE_OF_CONDUCT.md)
 - Pull request guide: [pull_request_template.md](./.github/pull_request_template.md)
+- Changelog: [CHANGELOG.md](./CHANGELOG.md)
+- Roadmap: [ROADMAP.md](./ROADMAP.md)
 
 ## License
 
