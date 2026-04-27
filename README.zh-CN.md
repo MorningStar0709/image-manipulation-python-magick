@@ -1,10 +1,21 @@
 # Python + ImageMagick 图片处理工具
 
-[English README](./README.md)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
+![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-blue)
+![ImageMagick](https://img.shields.io/badge/ImageMagick-required-orange)
+
+[English README](./README.md) | [报告问题](https://github.com/MorningStar0709/image-manipulation-python-magick/issues/new?template=bug-report.yml) | [功能建议](https://github.com/MorningStar0709/image-manipulation-python-magick/issues/new?template=feature-request.yml)
 
 这是一个基于 Python 主控、由 ImageMagick 执行实际图像处理的规则化图片处理工具仓库。
 
 仓库同时提供可直接调用的 CLI，以及可放入 Trae 环境中的 skill 定义，适合做格式转换、尺寸调整、居中裁成方图、补边成方图、元数据查看，以及可重复执行的批处理任务。
+
+## 一眼看懂
+
+- 仓库地址：`MorningStar0709/image-manipulation-python-magick`
+- 核心 CLI：`skills/image-manipulation-python-magick/scripts/image_tool.py`
+- skill 定义：`skills/image-manipulation-python-magick/SKILL.md`
+- 适用场景：规则化、可重复的图片处理任务，而不是手工 GUI 修图
 
 ## 项目特点
 
@@ -198,6 +209,12 @@ CLI 提供以下子命令：
 ## 贡献
 
 欢迎提交改进。可参考 [CONTRIBUTING.md](./CONTRIBUTING.md)。
+
+## 社区文件
+
+- 安全策略：[SECURITY.md](./SECURITY.md)
+- 行为规范：[CODE_OF_CONDUCT.md](./CODE_OF_CONDUCT.md)
+- PR 模板：[pull_request_template.md](./.github/pull_request_template.md)
 
 ## 许可证
 

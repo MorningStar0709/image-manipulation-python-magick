@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Security Report
+    url: https://github.com/MorningStar0709/image-manipulation-python-magick/security
+    about: Please use private security reporting when the issue is security-sensitive.

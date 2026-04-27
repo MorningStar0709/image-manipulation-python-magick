@@ -1,10 +1,21 @@
 # Image Manipulation with Python and ImageMagick
 
-[中文说明](./README.zh-CN.md)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
+![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-blue)
+![ImageMagick](https://img.shields.io/badge/ImageMagick-required-orange)
+
+[中文说明](./README.zh-CN.md) | [Report Bug](https://github.com/MorningStar0709/image-manipulation-python-magick/issues/new?template=bug-report.yml) | [Request Feature](https://github.com/MorningStar0709/image-manipulation-python-magick/issues/new?template=feature-request.yml)
 
 Rule-based image processing toolkit powered by Python orchestration and ImageMagick execution.
 
 This repository packages a reusable CLI and a Trae skill for common image workflows such as format conversion, resizing, square crop, square padding, metadata inspection, and repeatable batch jobs.
+
+## At A Glance
+
+- Repository: `MorningStar0709/image-manipulation-python-magick`
+- Primary CLI: `skills/image-manipulation-python-magick/scripts/image_tool.py`
+- Skill definition: `skills/image-manipulation-python-magick/SKILL.md`
+- Best for: repeatable, rule-based image workflows instead of manual GUI editing
 
 ## Highlights
 
@@ -198,6 +209,12 @@ The CLI supports the following subcommands:
 ## Contributing
 
 Contributions are welcome. See [CONTRIBUTING.md](./CONTRIBUTING.md) for guidance.
+
+## Community
+
+- Security policy: [SECURITY.md](./SECURITY.md)
+- Code of conduct: [CODE_OF_CONDUCT.md](./CODE_OF_CONDUCT.md)
+- Pull request guide: [pull_request_template.md](./.github/pull_request_template.md)
 
 ## License
 
