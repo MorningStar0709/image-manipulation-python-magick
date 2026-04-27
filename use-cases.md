@@ -43,8 +43,6 @@ You can preview which files will be processed and what the results will look lik
 
 If a processing task needs to run regularly, like generating product thumbnails every week, you can save the processing rules as a configuration file. Next time, just call the config directly without resetting parameters.
 
-固化常用任务，一劳永逸。
-
 Lock in your common tasks for good.
 
 ### Content Creator's Personal Asset Library
