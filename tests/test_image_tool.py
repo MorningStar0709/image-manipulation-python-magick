@@ -1,9 +1,12 @@
 import argparse
 import importlib.util
+import io
+import subprocess
 import sys
 import tempfile
 import unittest
 from pathlib import Path
+from unittest import mock
 
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
@@ -78,6 +81,34 @@ class ImageToolTests(unittest.TestCase):
             self.assertEqual(payload["input"], "path/to/images")
             self.assertEqual(payload["output"], "path/to/output")
             self.assertEqual(payload["manifest"], "path/to/output/manifest.json")
+
+    def test_print_json_falls_back_to_ascii_when_console_encoding_is_limited(self):
+        stream = io.TextIOWrapper(io.BytesIO(), encoding="cp1252")
+        with mock.patch("sys.stdout", stream):
+            image_tool.print_json({"message_zh": "配置文件已创建"})
+            stream.flush()
+            stream.buffer.seek(0)
+            output = stream.buffer.read().decode("cp1252")
+
+        self.assertIn(r"\u914d\u7f6e\u6587\u4ef6\u5df2\u521b\u5efa", output)
+
+    def test_run_magick_uses_identify_binary_when_convert_is_resolved(self):
+        completed = subprocess.CompletedProcess(
+            args=["identify", "-format", "%w,%h", "image.png"],
+            returncode=0,
+            stdout="10,20",
+            stderr="",
+        )
+        with mock.patch.object(image_tool.shutil, "which", return_value="/usr/bin/identify"):
+            with mock.patch.object(image_tool.subprocess, "run", return_value=completed) as run:
+                output = image_tool.run_magick("/usr/bin/convert", ["identify", "-format", "%w,%h", "image.png"])
+
+        self.assertEqual(output, "10,20")
+        run.assert_called_once_with(
+            ["/usr/bin/identify", "-format", "%w,%h", "image.png"],
+            capture_output=True,
+            text=True,
+        )
 
 
 if __name__ == "__main__":

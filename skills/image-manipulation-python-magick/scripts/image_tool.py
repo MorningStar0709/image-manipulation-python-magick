@@ -96,6 +96,11 @@ def resolve_magick() -> str:
     if magick:
         return magick
 
+    convert = shutil.which("convert")
+    identify = shutil.which("identify")
+    if convert and identify:
+        return convert
+
     explicit_home = os.getenv("IMAGEMAGICK_HOME")
     if explicit_home:
         candidate = Path(explicit_home)
@@ -118,13 +123,20 @@ def resolve_magick() -> str:
                 return str(candidates[-1])
 
     raise RuntimeError(
-        "ImageMagick not found. Install ImageMagick, add `magick` to PATH, or set IMAGEMAGICK_HOME."
+        "ImageMagick not found. Install ImageMagick, add `magick` or `convert`/`identify` to PATH, or set IMAGEMAGICK_HOME."
     )
 
 
 def run_magick(magick: str, args: list[str]) -> str:
+    command = [magick, *args]
+    if Path(magick).name.lower() in {"convert", "convert.exe"} and args[:1] == ["identify"]:
+        identify = shutil.which("identify")
+        if not identify:
+            raise RuntimeError("ImageMagick identify command not found.")
+        command = [identify, *args[1:]]
+
     result = subprocess.run(
-        [magick, *args],
+        command,
         capture_output=True,
         text=True,
     )
@@ -175,6 +187,13 @@ def write_json(path: Path, payload: object) -> None:
     with path.open("w", encoding="utf-8") as f:
         json.dump(payload, f, ensure_ascii=False, indent=2)
         f.write("\n")
+
+
+def print_json(payload: object) -> None:
+    try:
+        print(json.dumps(payload, ensure_ascii=False, indent=2))
+    except UnicodeEncodeError:
+        print(json.dumps(payload, ensure_ascii=True, indent=2))
 
 
 def iter_images(input_path: Path, recursive: bool, pattern: str | None = None) -> Iterable[Path]:
@@ -334,7 +353,7 @@ def pad_square(
 def print_results(results: list[ProcessResult]) -> int:
     ok_count = sum(1 for r in results if r.ok)
     fail_count = len(results) - ok_count
-    print(json.dumps(
+    print_json(
         {
             "total": len(results),
             "ok": ok_count,
@@ -349,9 +368,7 @@ def print_results(results: list[ProcessResult]) -> int:
                 for r in results
             ],
         },
-        ensure_ascii=False,
-        indent=2,
-    ))
+    )
     return 0 if fail_count == 0 else 1
 
 
@@ -381,16 +398,14 @@ def save_manifest(path: Path | None, payload: dict[str, object]) -> None:
 
 
 def print_single_result(source: Path, output: Path | None, ok: bool, message: str = "") -> int:
-    print(json.dumps(
+    print_json(
         {
             "source": str(source),
             "output": str(output) if output else None,
             "ok": ok,
             "message": message,
         },
-        ensure_ascii=False,
-        indent=2,
-    ))
+    )
     return 0 if ok else 1
 
 
@@ -420,10 +435,10 @@ def handle_doctor(_: argparse.Namespace) -> int:
             "magick_found": False,
             "magick_error": str(exc),
         })
-        print(json.dumps(info, ensure_ascii=False, indent=2))
+        print_json(info)
         return 1
 
-    print(json.dumps(info, ensure_ascii=False, indent=2))
+    print_json(info)
     return 0
 
 
@@ -439,7 +454,7 @@ def handle_profiles(_: argparse.Namespace) -> int:
             for name, profile in PROFILE_PRESETS.items()
         ],
     }
-    print(json.dumps(payload, ensure_ascii=False, indent=2))
+    print_json(payload)
     return 0
 
 
@@ -460,7 +475,7 @@ def handle_init_config(args: argparse.Namespace) -> int:
     payload.update(PROFILE_PRESETS[profile_name]["defaults"])
     output_path = Path(args.output)
     write_json(output_path, payload)
-    print(json.dumps(
+    print_json(
         {
             "ok": True,
             "message": "config created",
@@ -468,9 +483,7 @@ def handle_init_config(args: argparse.Namespace) -> int:
             "output": str(output_path),
             "profile": profile_name,
         },
-        ensure_ascii=False,
-        indent=2,
-    ))
+    )
     return 0
 
 
@@ -576,13 +589,13 @@ def handle_info(args: argparse.Namespace) -> int:
         if args.verbose:
             print(get_verbose_info(magick, input_path))
         else:
-            print(json.dumps(get_basic_info(magick, input_path), ensure_ascii=False, indent=2))
+            print_json(get_basic_info(magick, input_path))
         return 0
 
     rows = []
     for image in iter_images(input_path, recursive=args.recursive, pattern=args.pattern):
         rows.append(get_basic_info(magick, image))
-    print(json.dumps(rows, ensure_ascii=False, indent=2))
+    print_json(rows)
     return 0
 
 
@@ -713,7 +726,7 @@ def handle_batch(args: argparse.Namespace) -> int:
     payload["output"] = str(output_dir)
     if args.manifest:
         save_manifest(Path(args.manifest), payload)
-    print(json.dumps(payload, ensure_ascii=False, indent=2))
+    print_json(payload)
     return 0 if payload["failed"] == 0 else 1
 
 
