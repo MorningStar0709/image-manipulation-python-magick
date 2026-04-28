@@ -16,6 +16,9 @@ dist/
 .pytest_cache/
 .mypy_cache/
 .ruff_cache/
+.hypothesis/
+.tox/
+.nox/
 .coverage
 htmlcov/
 
@@ -29,9 +32,17 @@ htmlcov/
 .DS_Store
 Thumbs.db
 
+# Local env and secrets
+.env
+.env.*
+!.env.example
+
 # Local output artifacts for image processing jobs
 output/
 outputs/
 tmp/
 temp/
 *.log
+image-job.json
+manifest.json
+*.manifest.json

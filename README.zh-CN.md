@@ -60,7 +60,7 @@
 - Python 3.10 或更高版本
 - 已安装 ImageMagick，且系统中可调用 `magick`
 
-CLI 会优先从 `PATH` 中查找 `magick`。在 Windows 上，它还会额外检查若干常见安装目录。
+CLI 会优先从 `PATH` 中查找 `magick`，然后检查 `IMAGEMAGICK_HOME`；在 Windows 上，它还会额外检查若干常见安装目录。
 
 ## 快速开始
 
@@ -108,28 +108,30 @@ python skills/image-manipulation-python-magick/scripts/image_tool.py pad-square 
 
 ## 批量处理
 
+在 Bash 或 Zsh 中使用 `\` 续行；在 PowerShell 中请改成行尾反引号。
+
 先用内置 profile 做一次预演：
 
 ```bash
-python skills/image-manipulation-python-magick/scripts/image_tool.py batch ^
-  --input path/to/images ^
-  --output path/to/output ^
-  --profile thumbnail ^
-  --recursive ^
+python skills/image-manipulation-python-magick/scripts/image_tool.py batch \
+  --input path/to/images \
+  --output path/to/output \
+  --profile thumbnail \
+  --recursive \
   --dry-run
 ```
 
 实际批量转成 WEBP，并输出 manifest：
 
 ```bash
-python skills/image-manipulation-python-magick/scripts/image_tool.py batch ^
-  --input path/to/images ^
-  --output path/to/output ^
-  --action convert ^
-  --format webp ^
-  --suffix _web ^
-  --quality 85 ^
-  --recursive ^
+python skills/image-manipulation-python-magick/scripts/image_tool.py batch \
+  --input path/to/images \
+  --output path/to/output \
+  --action convert \
+  --format webp \
+  --suffix _web \
+  --quality 85 \
+  --recursive \
   --manifest path/to/output/manifest.json
 ```
 

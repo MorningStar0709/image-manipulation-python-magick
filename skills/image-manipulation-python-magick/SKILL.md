@@ -174,8 +174,8 @@ Built-in profiles:
 Use config for repeated jobs on Windows Trae:
 
 ```powershell
-python "C:\Users\skyler\.trae\skills\image-manipulation-python-magick\scripts\image_tool.py" init-config --output "image-job.json" --profile thumbnail
-python "C:\Users\skyler\.trae\skills\image-manipulation-python-magick\scripts\image_tool.py" batch --config "image-job.json"
+python "$env:USERPROFILE\.trae\skills\image-manipulation-python-magick\scripts\image_tool.py" init-config --output "image-job.json" --profile thumbnail
+python "$env:USERPROFILE\.trae\skills\image-manipulation-python-magick\scripts\image_tool.py" batch --config "image-job.json"
 ```
 
 ## Safety Defaults
@@ -255,11 +255,11 @@ Result templates:
 ## Short Examples
 
 ```powershell
-python "C:\Users\skyler\.trae\skills\image-manipulation-python-magick\scripts\image_tool.py" doctor
-python "C:\Users\skyler\.trae\skills\image-manipulation-python-magick\scripts\image_tool.py" profiles
-python "C:\Users\skyler\.trae\skills\image-manipulation-python-magick\scripts\image_tool.py" info --input "D:\images\photo.jpg"
-python "C:\Users\skyler\.trae\skills\image-manipulation-python-magick\scripts\image_tool.py" batch --input "D:\images" --output "D:\images_out" --profile thumbnail --dry-run
-python "C:\Users\skyler\.trae\skills\image-manipulation-python-magick\scripts\image_tool.py" batch --config "image-job.json"
+python "$env:USERPROFILE\.trae\skills\image-manipulation-python-magick\scripts\image_tool.py" doctor
+python "$env:USERPROFILE\.trae\skills\image-manipulation-python-magick\scripts\image_tool.py" profiles
+python "$env:USERPROFILE\.trae\skills\image-manipulation-python-magick\scripts\image_tool.py" info --input "path\to\photo.jpg"
+python "$env:USERPROFILE\.trae\skills\image-manipulation-python-magick\scripts\image_tool.py" batch --input "path\to\images" --output "path\to\images_out" --profile thumbnail --dry-run
+python "$env:USERPROFILE\.trae\skills\image-manipulation-python-magick\scripts\image_tool.py" batch --config "image-job.json"
 ```
 
 ## Limitations

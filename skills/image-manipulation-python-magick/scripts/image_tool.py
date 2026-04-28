@@ -3,13 +3,14 @@
 
 This script intentionally keeps dependencies minimal:
 - Python standard library only
-- ImageMagick available as `magick` on PATH, or in common Windows install paths
+- ImageMagick available as `magick` on PATH, `IMAGEMAGICK_HOME`, or in common Windows install paths
 """
 
 from __future__ import annotations
 
 import argparse
 import json
+import os
 import platform
 import shutil
 import subprocess
@@ -95,20 +96,29 @@ def resolve_magick() -> str:
     if magick:
         return magick
 
-    common_windows_dirs = [
-        Path(r"C:\Program Files"),
-        Path(r"C:\Program Files (x86)"),
-        Path(r"D:\APP\Develop"),
-    ]
-    for base in common_windows_dirs:
-        if not base.exists():
-            continue
-        candidates = sorted(base.glob("ImageMagick-*/magick.exe"))
-        if candidates:
-            return str(candidates[-1])
+    explicit_home = os.getenv("IMAGEMAGICK_HOME")
+    if explicit_home:
+        candidate = Path(explicit_home)
+        if candidate.is_dir():
+            exe_name = "magick.exe" if os.name == "nt" else "magick"
+            candidate = candidate / exe_name
+        if candidate.exists():
+            return str(candidate)
+
+    if os.name == "nt":
+        common_windows_dirs = [
+            Path(r"C:\Program Files"),
+            Path(r"C:\Program Files (x86)"),
+        ]
+        for base in common_windows_dirs:
+            if not base.exists():
+                continue
+            candidates = sorted(base.glob("ImageMagick-*/magick.exe"))
+            if candidates:
+                return str(candidates[-1])
 
     raise RuntimeError(
-        "ImageMagick not found. Install ImageMagick on Windows and ensure magick.exe is on PATH."
+        "ImageMagick not found. Install ImageMagick, add `magick` to PATH, or set IMAGEMAGICK_HOME."
     )
 
 
@@ -441,11 +451,11 @@ def handle_init_config(args: argparse.Namespace) -> int:
     payload = {
         "tool_version": TOOL_VERSION,
         "profile": profile_name,
-        "input": r"D:\images",
-        "output": r"D:\images_out",
+        "input": "path/to/images",
+        "output": "path/to/output",
         "recursive": True,
         "pattern": "*.png",
-        "manifest": r"D:\images_out\manifest.json",
+        "manifest": "path/to/output/manifest.json",
     }
     payload.update(PROFILE_PRESETS[profile_name]["defaults"])
     output_path = Path(args.output)

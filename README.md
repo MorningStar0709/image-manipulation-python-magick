@@ -60,7 +60,7 @@ If you are installing it as a Trae skill, the same files can be placed under `.t
 - Python 3.10 or newer
 - ImageMagick installed and available as `magick`
 
-The CLI first tries `magick` from `PATH`. On Windows, it also checks a few common install directories.
+The CLI first tries `magick` from `PATH`, then `IMAGEMAGICK_HOME`, and on Windows it also checks a few common install directories.
 
 ## Quick Start
 
@@ -108,28 +108,30 @@ python skills/image-manipulation-python-magick/scripts/image_tool.py pad-square 
 
 ## Batch Processing
 
+Use `\` for line continuation in Bash or Zsh. In PowerShell, replace it with a trailing backtick.
+
 Run a dry-run batch job with a built-in profile:
 
 ```bash
-python skills/image-manipulation-python-magick/scripts/image_tool.py batch ^
-  --input path/to/images ^
-  --output path/to/output ^
-  --profile thumbnail ^
-  --recursive ^
+python skills/image-manipulation-python-magick/scripts/image_tool.py batch \
+  --input path/to/images \
+  --output path/to/output \
+  --profile thumbnail \
+  --recursive \
   --dry-run
 ```
 
 Run a real batch conversion to WEBP and write a manifest:
 
 ```bash
-python skills/image-manipulation-python-magick/scripts/image_tool.py batch ^
-  --input path/to/images ^
-  --output path/to/output ^
-  --action convert ^
-  --format webp ^
-  --suffix _web ^
-  --quality 85 ^
-  --recursive ^
+python skills/image-manipulation-python-magick/scripts/image_tool.py batch \
+  --input path/to/images \
+  --output path/to/output \
+  --action convert \
+  --format webp \
+  --suffix _web \
+  --quality 85 \
+  --recursive \
   --manifest path/to/output/manifest.json
 ```
 

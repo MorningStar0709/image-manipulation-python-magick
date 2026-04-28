@@ -36,6 +36,7 @@ At minimum, validate the commands relevant to your changes, for example:
 python skills/image-manipulation-python-magick/scripts/image_tool.py --help
 python skills/image-manipulation-python-magick/scripts/image_tool.py profiles
 python skills/image-manipulation-python-magick/scripts/image_tool.py doctor
+python -m unittest discover -s tests -p "test_*.py"
 ```
 
 If your changes affect batch behavior, also validate a `--dry-run` batch example.
