@@ -107,7 +107,9 @@ def resolve_magick() -> str:
         if candidates:
             return str(candidates[-1])
 
-    raise RuntimeError("ImageMagick not found. Install it and/or add 'magick' to PATH.")
+    raise RuntimeError(
+        "ImageMagick not found. Install ImageMagick on Windows and ensure magick.exe is on PATH."
+    )
 
 
 def run_magick(magick: str, args: list[str]) -> str:
@@ -439,11 +441,11 @@ def handle_init_config(args: argparse.Namespace) -> int:
     payload = {
         "tool_version": TOOL_VERSION,
         "profile": profile_name,
-        "input": "path/to/images",
-        "output": "path/to/output",
+        "input": r"D:\images",
+        "output": r"D:\images_out",
         "recursive": True,
         "pattern": "*.png",
-        "manifest": "path/to/output/manifest.json",
+        "manifest": r"D:\images_out\manifest.json",
     }
     payload.update(PROFILE_PRESETS[profile_name]["defaults"])
     output_path = Path(args.output)
@@ -452,6 +454,7 @@ def handle_init_config(args: argparse.Namespace) -> int:
         {
             "ok": True,
             "message": "config created",
+            "message_zh": "配置文件已创建",
             "output": str(output_path),
             "profile": profile_name,
         },

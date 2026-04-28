@@ -1,13 +1,14 @@
 ---
 name: image-manipulation-python-magick
-description: Process and manipulate images with Python orchestration and ImageMagick execution. Invoke when users need reusable image automation, batch conversion, resizing, cropping, padding, or metadata inspection.
-compatibility: Requires Python 3.10+ and ImageMagick available as `magick` on PATH. Works on Windows, Linux, and macOS.
+description: Process and manipulate images in Trae with Python orchestration and ImageMagick on Windows-friendly paths. Invoke when users need reusable image automation, batch conversion, resizing, cropping, padding, metadata inspection, or Chinese requests such as 批量处理图片, 批量转格式, 裁剪图片, 补白边, 生成缩略图, 压缩成 webp, or 批量改尺寸.
 ---
 
 # Image Manipulation with Python and ImageMagick
 
 This skill is for agent-driven, rule-based image processing using the bundled
 Python CLI and ImageMagick.
+
+Use Windows absolute paths when the user provides local files from Trae on Windows. Preserve source files by default and write outputs to a separate directory unless the user explicitly asks to overwrite.
 
 ## Purpose
 
@@ -38,7 +39,7 @@ Do not use this skill when:
   transforms
 
 Do not execute shape-changing transforms immediately when crop vs pad is still
-unresolved. Stay inside this skill and clarify first with `AskUserQuestion`.
+unresolved. Stay inside this skill and clarify first.
 
 ## Task Classification
 
@@ -77,19 +78,20 @@ Decision priority:
 4. Use config for repeatable jobs
 5. Use raw batch arguments only when necessary
 
-## AskUserQuestion Policy
+## Clarification Policy
 
-When clarification is necessary, prefer the software's structured
-`AskUserQuestion` interaction mode instead of plain text follow-up.
+When clarification is necessary, ask a concise question before running commands.
+If Trae provides a structured user-question tool in the current environment, use
+it; otherwise ask in plain Simplified Chinese.
 
-Use `AskUserQuestion` when:
+Clarify when:
 
 - The user must choose between crop and pad
 - Output format materially affects compatibility
 - Overwrite behavior must be confirmed
 - Multiple profiles are plausible and one should be selected explicitly
 
-Do not use `AskUserQuestion` when:
+Do not ask when:
 
 - A safe default is obvious and low-risk
 - The task is purely informational
@@ -112,7 +114,7 @@ Recommended options:
 For execution-oriented tasks, use this order:
 
 1. Classify the task
-2. If ambiguity remains, use `AskUserQuestion`
+2. If ambiguity remains, clarify before running commands
 3. Run `doctor` only if environment readiness is uncertain
 4. Prefer `profiles` for common tasks
 5. Prefer `init-config` plus `batch --config` for repeatable workflows
@@ -169,11 +171,11 @@ Built-in profiles:
 - `webp-web`
 - `wallpaper-fhd`
 
-Use config for repeated jobs:
+Use config for repeated jobs on Windows Trae:
 
-```bash
-python .trae/skills/image-manipulation-python-magick/scripts/image_tool.py init-config --output image-job.json --profile thumbnail
-python .trae/skills/image-manipulation-python-magick/scripts/image_tool.py batch --config image-job.json
+```powershell
+python "C:\Users\skyler\.trae\skills\image-manipulation-python-magick\scripts\image_tool.py" init-config --output "image-job.json" --profile thumbnail
+python "C:\Users\skyler\.trae\skills\image-manipulation-python-magick\scripts\image_tool.py" batch --config "image-job.json"
 ```
 
 ## Safety Defaults
@@ -190,7 +192,7 @@ Use these recovery rules:
 
 - `magick not found` -> stop and explain environment is not ready
 - Invalid input path -> stop and ask for the correct path
-- Crop vs pad unresolved -> ask with `AskUserQuestion`
+- Crop vs pad unresolved -> ask before running the transform
 - Output exists -> skip by default; mention `--overwrite` only if replacement is intended
 - No files matched -> report zero matches and suggest checking input path, pattern, or recursion
 - Partial batch failure -> finish remaining files, then summarize failures
@@ -252,12 +254,12 @@ Result templates:
 
 ## Short Examples
 
-```bash
-python .trae/skills/image-manipulation-python-magick/scripts/image_tool.py doctor
-python .trae/skills/image-manipulation-python-magick/scripts/image_tool.py profiles
-python .trae/skills/image-manipulation-python-magick/scripts/image_tool.py info --input path/to/image.jpg
-python .trae/skills/image-manipulation-python-magick/scripts/image_tool.py batch --input path/to/images --output path/to/output --profile thumbnail --dry-run
-python .trae/skills/image-manipulation-python-magick/scripts/image_tool.py batch --config image-job.json
+```powershell
+python "C:\Users\skyler\.trae\skills\image-manipulation-python-magick\scripts\image_tool.py" doctor
+python "C:\Users\skyler\.trae\skills\image-manipulation-python-magick\scripts\image_tool.py" profiles
+python "C:\Users\skyler\.trae\skills\image-manipulation-python-magick\scripts\image_tool.py" info --input "D:\images\photo.jpg"
+python "C:\Users\skyler\.trae\skills\image-manipulation-python-magick\scripts\image_tool.py" batch --input "D:\images" --output "D:\images_out" --profile thumbnail --dry-run
+python "C:\Users\skyler\.trae\skills\image-manipulation-python-magick\scripts\image_tool.py" batch --config "image-job.json"
 ```
 
 ## Limitations
