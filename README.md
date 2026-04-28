@@ -3,6 +3,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
 ![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-blue)
 ![ImageMagick](https://img.shields.io/badge/ImageMagick-required-orange)
+[![CI](https://github.com/MorningStar0709/image-manipulation-python-magick/actions/workflows/ci.yml/badge.svg)](https://github.com/MorningStar0709/image-manipulation-python-magick/actions/workflows/ci.yml)
 
 [中文说明](./README.zh-CN.md) | [Report Bug](https://github.com/MorningStar0709/image-manipulation-python-magick/issues/new?template=bug-report.yml) | [Request Feature](https://github.com/MorningStar0709/image-manipulation-python-magick/issues/new?template=feature-request.yml)
 
@@ -25,7 +26,8 @@ Want to know who this tool is for and what problems it solves? Check out the [us
 - Works for one-off commands and repeatable config-driven batch workflows
 - Built-in profiles for avatars, social square images, thumbnails, WEBP export, and Full HD wallpapers
 - Safe defaults: non-overwrite behavior, optional dry-run, optional manifest output
-- Supports Windows, Linux, and macOS when `magick` is available
+- Supports Windows, Linux, and macOS with ImageMagick 7 `magick` or ImageMagick 6 `convert`/`identify`
+- CI coverage for Ubuntu and Windows across Python 3.10, 3.11, 3.12, and 3.13
 
 ## Repository Layout
 
@@ -35,6 +37,11 @@ Want to know who this tool is for and what problems it solves? Check out the [us
 |-- README.zh-CN.md
 |-- LICENSE
 |-- CONTRIBUTING.md
+|-- tests/
+|   `-- test_image_tool.py
+|-- .github/
+|   `-- workflows/
+|       `-- ci.yml
 |-- examples/
 |   `-- thumbnail-job.json
 `-- skills/
@@ -58,9 +65,26 @@ If you are installing it as a Trae skill, the same files can be placed under `.t
 ## Requirements
 
 - Python 3.10 or newer
-- ImageMagick installed and available as `magick`
+- ImageMagick installed and available through one of:
+  - ImageMagick 7: `magick`
+  - ImageMagick 6: `convert` and `identify`
 
-The CLI first tries `magick` from `PATH`, then `IMAGEMAGICK_HOME`, and on Windows it also checks a few common install directories.
+The CLI first tries `magick` from `PATH`. If that is unavailable, it falls back to `convert` plus `identify`, which keeps common Linux ImageMagick 6 installations working. It also checks `IMAGEMAGICK_HOME`, and on Windows it scans common ImageMagick install directories.
+
+Install examples:
+
+```bash
+# Ubuntu / Debian
+sudo apt-get install imagemagick
+
+# macOS
+brew install imagemagick
+```
+
+```powershell
+# Windows with Chocolatey
+choco install imagemagick -y
+```
 
 ## Quick Start
 
@@ -174,6 +198,7 @@ The CLI supports the following subcommands:
 - Batch jobs can write a manifest JSON with `--manifest`
 - Threshold filters are supported with `--min-width` and `--min-height`
 - The tool continues processing other files unless `--fail-fast` is specified
+- JSON CLI output stays readable on UTF-8 terminals and falls back safely on legacy Windows console encodings
 
 ## Example Config
 
@@ -209,6 +234,24 @@ The CLI supports the following subcommands:
 - Exact visual output can vary with color profile handling, alpha behavior, and delegates
 - Very large images may require more memory and temporary disk usage
 - The repository is distributed as a script-based tool, not as a packaged PyPI library
+
+## Development
+
+Run the unit tests:
+
+```bash
+python -m unittest discover -s tests -p "test_*.py"
+```
+
+Run the same basic CLI smoke checks used by CI:
+
+```bash
+python skills/image-manipulation-python-magick/scripts/image_tool.py --help
+python skills/image-manipulation-python-magick/scripts/image_tool.py profiles
+python skills/image-manipulation-python-magick/scripts/image_tool.py doctor
+```
+
+The GitHub Actions workflow runs these checks on Ubuntu and Windows for Python 3.10 through 3.13.
 
 ## Contributing
 

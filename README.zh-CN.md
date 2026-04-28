@@ -3,6 +3,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
 ![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-blue)
 ![ImageMagick](https://img.shields.io/badge/ImageMagick-required-orange)
+[![CI](https://github.com/MorningStar0709/image-manipulation-python-magick/actions/workflows/ci.yml/badge.svg)](https://github.com/MorningStar0709/image-manipulation-python-magick/actions/workflows/ci.yml)
 
 [English README](./README.md) | [报告问题](https://github.com/MorningStar0709/image-manipulation-python-magick/issues/new?template=bug-report.yml) | [功能建议](https://github.com/MorningStar0709/image-manipulation-python-magick/issues/new?template=feature-request.yml)
 
@@ -25,7 +26,8 @@
 - 既支持单次命令，也支持基于 JSON 配置的可重复批处理
 - 内置头像、社媒方图、补边方图、缩略图、WEBP 导出、FHD 壁纸等常用 profile
 - 默认更安全：不覆盖已有文件、支持 `--dry-run` 预演、支持 `--manifest` 产出清单
-- 兼容 Windows、Linux、macOS，只要系统可用 `magick`
+- 兼容 Windows、Linux、macOS，支持 ImageMagick 7 的 `magick`，也支持 ImageMagick 6 的 `convert`/`identify`
+- CI 覆盖 Ubuntu 和 Windows，以及 Python 3.10、3.11、3.12、3.13
 
 ## 仓库结构
 
@@ -35,6 +37,11 @@
 |-- README.zh-CN.md
 |-- LICENSE
 |-- CONTRIBUTING.md
+|-- tests/
+|   `-- test_image_tool.py
+|-- .github/
+|   `-- workflows/
+|       `-- ci.yml
 |-- examples/
 |   `-- thumbnail-job.json
 `-- skills/
@@ -58,9 +65,26 @@
 ## 环境要求
 
 - Python 3.10 或更高版本
-- 已安装 ImageMagick，且系统中可调用 `magick`
+- 已安装 ImageMagick，并满足以下任一条件：
+  - ImageMagick 7：系统中可调用 `magick`
+  - ImageMagick 6：系统中可调用 `convert` 和 `identify`
 
-CLI 会优先从 `PATH` 中查找 `magick`，然后检查 `IMAGEMAGICK_HOME`；在 Windows 上，它还会额外检查若干常见安装目录。
+CLI 会优先从 `PATH` 中查找 `magick`。如果找不到，会回退到 `convert` 加 `identify`，因此常见的 Linux ImageMagick 6 环境也能直接使用。它还会检查 `IMAGEMAGICK_HOME`；在 Windows 上，也会额外扫描若干常见安装目录。
+
+安装示例：
+
+```bash
+# Ubuntu / Debian
+sudo apt-get install imagemagick
+
+# macOS
+brew install imagemagick
+```
+
+```powershell
+# Windows + Chocolatey
+choco install imagemagick -y
+```
 
 ## 快速开始
 
@@ -174,6 +198,7 @@ CLI 提供以下子命令：
 - 批处理可通过 `--manifest` 写出 JSON 清单
 - 支持 `--min-width` 和 `--min-height` 做阈值过滤
 - 除非显式指定 `--fail-fast`，否则单个文件失败不会中断整个批处理
+- JSON CLI 输出在 UTF-8 终端中保持可读，在旧版 Windows 控制台编码下也会安全降级
 
 ## 配置文件示例
 
@@ -209,6 +234,24 @@ CLI 提供以下子命令：
 - 颜色配置、透明通道处理和不同 delegates 可能导致视觉结果略有差异
 - 超大图片会占用更多内存和临时磁盘空间
 - 当前仓库以脚本形式分发，并未封装成 PyPI 安装包
+
+## 开发与测试
+
+运行单元测试：
+
+```bash
+python -m unittest discover -s tests -p "test_*.py"
+```
+
+运行 CI 中同样使用的基础 CLI 烟测：
+
+```bash
+python skills/image-manipulation-python-magick/scripts/image_tool.py --help
+python skills/image-manipulation-python-magick/scripts/image_tool.py profiles
+python skills/image-manipulation-python-magick/scripts/image_tool.py doctor
+```
+
+GitHub Actions 会在 Ubuntu 和 Windows 上，对 Python 3.10 到 3.13 执行这些检查。
 
 ## 贡献
 
